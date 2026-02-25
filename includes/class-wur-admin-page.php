@@ -165,11 +165,17 @@ class WUR_Admin_Page
         foreach ($summary as $key => $value) {
             echo '<div class="wur-card">';
             echo '<strong>' . esc_html(ucwords(str_replace('_', ' ', (string) $key))) . '</strong><br/>';
-            if (is_numeric($value) && 'order_count' !== $key) {
-                echo esc_html(wc_price((float) $value));
+
+            if ('order_count' === $key) {
+                echo esc_html((string) $value);
+            } elseif ('margin' === $key) {
+                echo esc_html(number_format((float) $value, 2)) . '%';
+            } elseif (is_numeric($value)) {
+                echo wp_kses_post(wc_price((float) $value));
             } else {
                 echo esc_html((string) $value);
             }
+
             echo '</div>';
         }
         echo '</div>';
